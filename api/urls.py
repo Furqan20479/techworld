@@ -3,7 +3,7 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-
+from authentication.views import signupview,loginview
 
 urlpatterns = [
     path('',views.index, name='index'),
@@ -15,8 +15,8 @@ urlpatterns = [
     path('team/', views.team, name='team'),
     path('testi/', views.testimonial, name='testi'),
     path('four_0_four/', views.four_0_four, name='four'),
-    path('signup/',views.signup, name='signup'),
-    path('login/', views.login, name='login'),
+    path('signup/', signupview, name='signup'),
+    path('login/', loginview, name='login'),
 
 
 

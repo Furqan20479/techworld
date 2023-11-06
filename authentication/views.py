@@ -1,37 +1,44 @@
 from django.shortcuts import render
-from django.contrib.auth.models import User
+from api.models import Sign,Log
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login
 # Create your views here.
-def signup(request):
+def signupview(request):
 
-    if request.method == 'POST':
+    if request.method == "POST":
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
         confirmpassword = request.POST.get('confirmpassword')        
 
-        print(username, email, password, confirmpassword)
+        user = Sign(username=username, email=email, password=password, confirmpassword=confirmpassword)
+        user.save()
+
         
-        user = User.objects.create_user(username=username, email=email, password=password, confirmpassword=confirmpassword)
-        # return render(request, 'api/templates/techworld/login.html')
+
 
 
     return render(request, 'api/signup.html')
 
 
-def login(request):
+def loginview(request):
 
-    if request.method == 'POST':
+    if request.method == "POST":
 
-        username = request.POST.get('username')
+        email = request.POST.get('email')
         password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
+
+        user = authenticate(email=email, password=password)
+
         if user is not None:
-            login(request,user)
-            return HttpResponse("LoggedIn")
+            
+            login(request,Sign)
+
+            return render(request, 'api/templates/layout/base.html')
         else:
             return HttpResponse("Invalid credentials")
-    return HttpResponse("GET REQUEST !")
+        
+    return render(request, "api/login.html")
+
 
         
